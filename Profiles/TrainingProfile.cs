@@ -16,9 +16,9 @@ namespace MyGymProject.Server.Profiles
                 .ForMember(dest => dest.Time, opt => opt.MapFrom(src => DateTime.SpecifyKind(src.Time, DateTimeKind.Utc)));
 
             CreateMap<Training, TrainingResponseDTO>()
-                .ForMember(dest => dest.TrainerName, opt => opt.MapFrom(src => src.Trainer != null ? $"{src.Trainer.FullName}": ""))
-                .ForMember(dest => dest.HallName, opt => opt.MapFrom(src => src.Hall != null ? src.Hall.Name : ""))
-                .ForMember(dest => dest.ClientNames, opt => opt.MapFrom(src => src.Clients.Select(c => $"{c.FullName}").ToList()));
+                .ForMember(dest => dest.TrainerName, opt => opt.MapFrom(src => src.Trainer.FullName))
+                .ForMember(dest => dest.HallName, opt => opt.MapFrom(src => src.Hall.Name))
+                .ForMember(dest => dest.ClientNames, opt => opt.MapFrom(src => src.Clients.Select(c => c.FullName).ToList()));
         }
     }
 }

@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.Data;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using MyGymProject.Server.DTOs.Client;
 using MyGymProject.Server.DTOs.DTOLogin;
-using MyGymProject.Server.Models;
 using MyGymProject.Server.Services.Interfaces;
 
 namespace MyGymProject.Server.Controllers
@@ -15,8 +12,6 @@ namespace MyGymProject.Server.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IClientService _clientService;
-        private readonly ITrainerService _trainerService;
-        private readonly IAdminService _adminService;
 
         public AuthController(
             IAuthService authService,
@@ -26,8 +21,6 @@ namespace MyGymProject.Server.Controllers
         {
             _authService = authService;
             _clientService = clientService;
-            _trainerService = trainerService;
-            _adminService = adminService;
         }
 
         [HttpPost("login")]

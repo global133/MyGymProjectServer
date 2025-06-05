@@ -55,7 +55,7 @@ namespace MyGymProject.Server.Controllers
             if (createdTrainer == null)
                 return Conflict(new { message = $"Trainer with login '{dto.Login}' already exists." });
 
-            return CreatedAtAction(nameof(GetById), createdTrainer);
+            return Ok(createdTrainer);
         }
 
         // PUT: api/Trainers/5
