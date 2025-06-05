@@ -4,6 +4,7 @@ using MyGymProject.Server.Repositories.Interfaces;
 using MyGymProject.Server.Services.Interfaces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Formats.Asn1;
 
 namespace MyGymProject.Server.Services
 {
@@ -174,6 +175,20 @@ namespace MyGymProject.Server.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка при получении всех тренировок с клиентами, тренерами и залами.");
+                return Enumerable.Empty<TrainingResponseDTO>();
+            }
+        }
+        
+        public async Task<IEnumerable<TrainingResponseDTO>> GetTrainingsByClient(int clientId)
+        {
+            try
+            {
+                var trainings = await this._trainingRepository.GetTrainingsByClient(clientId);
+                return this._mapper.Map<IEnumerable<TrainingResponseDTO>>(trainings);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка при получении тренировок по айди клиента.");
                 return Enumerable.Empty<TrainingResponseDTO>();
             }
         }

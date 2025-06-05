@@ -2,6 +2,7 @@
 {
     public class ClientReadDto
     {
+        public int Id { get; set; }
         public string Login { get; set; } = null!;
         public string FullName { get; set; } = null!;
         public string Phone { get; set; } = null!;

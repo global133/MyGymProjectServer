@@ -139,5 +139,15 @@ namespace MyGymProject.Server.Repositories
                 .Include(t => t.Hall)     
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Training>> GetTrainingsByClient(int clientId)
+        {
+            return await _context.Trainings
+                .Include(t => t.Trainer)
+                .Include(t => t.Hall)
+                .Include(t => t.Clients)
+                .Where(t => t.Clients.Any(c => c.Id == clientId))
+                .ToListAsync();
+        }
     }
 }

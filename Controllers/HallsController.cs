@@ -42,7 +42,7 @@ namespace MyGymProject.Server.Controllers
             try
             {
                 var created = await _hallService.CreateHall(dto);
-                return CreatedAtAction(nameof(GetById), created);
+                return Ok(created);
             }
             catch (Exception ex)
             {

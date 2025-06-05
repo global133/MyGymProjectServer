@@ -34,15 +34,15 @@ namespace MyGymProject.Server.Services
         {
             var client = await this._clientRepository.GetByLoginAsync(login);
             if (client != null && VerifyPassword(client.Password, password))
-                return (true, GenerateToken(login, "Client"), "Client", "Успешный вход");
+                return (true, GenerateToken(login, "Client", client.Id), "Client", "Успешный вход");
 
             var trainer = await this._trainerRepository.GetByLoginAsync(login);
             if (trainer != null && VerifyPassword(trainer.Password, password))
-                return (true, GenerateToken(login, "Trainer"), "Trainer", "Успешный вход");
+                return (true, GenerateToken(login, "Trainer", trainer.Id), "Trainer", "Успешный вход");
 
             var admin = await this._adminRepository.GetAdminByLoginAsync(login);
             if (admin != null && VerifyPassword(admin.Password, password))
-                return (true, GenerateToken(login, admin.Status), admin.Status, "Успешный вход");
+                return (true, GenerateToken(login, admin.Status, admin.Id), admin.Status, "Успешный вход");
 
             return (false, null, null, "Неверный логин или пароль.");
         }
@@ -56,10 +56,11 @@ namespace MyGymProject.Server.Services
             return result == PasswordVerificationResult.Success;
         }
 
-        private string GenerateToken(string login, string role)
+        private string GenerateToken(string login, string role, int id)
         {
             var claims = new[]
             {
+                new Claim(ClaimTypes.NameIdentifier, id.ToString() ),
                 new Claim(ClaimTypes.Name, login),
                 new Claim(ClaimTypes.Role, role)
             };

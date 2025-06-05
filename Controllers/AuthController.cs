@@ -41,6 +41,9 @@ namespace MyGymProject.Server.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterClient([FromBody] ClientCreateDto dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var success = await this._clientService.AddAsync(dto);
 
             if (success == true)
