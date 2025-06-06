@@ -59,7 +59,7 @@ namespace MyGymProject.Server.Controllers
 
         // PUT: api/clients/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, ClientCreateDto dto)
+        public async Task<IActionResult> Update(int id, ClientUpdateDto dto)
         {
             var success = await this._clientService.UpdateAsync(id, dto);
             if (!success)
