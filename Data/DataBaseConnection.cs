@@ -12,7 +12,6 @@ namespace MyGymProject.Server.Data
         public DbSet<Hall> Halls { get; set; }
         public DbSet<Training> Trainings { get; set; }
 
-        public DataBaseConnection() => Database.EnsureCreated();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
