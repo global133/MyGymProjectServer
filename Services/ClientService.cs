@@ -86,7 +86,7 @@ namespace MyGymProject.Server.Services
             }
         }
 
-        public async Task<bool> UpdateAsync(int id, ClientCreateDto updateDto)
+        public async Task<bool> UpdateAsync(int id, ClientUpdateDto updateDto)
         {
             try
             {

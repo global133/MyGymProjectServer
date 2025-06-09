@@ -21,7 +21,7 @@ namespace MyGymProject.Server.Services.Interfaces
         Task<IEnumerable<ClientReadDto>> GetAllUSersAsync();
         Task<ClientReadDto?> GetClientByIdAsync(int clientId);
         Task<bool> AddClientAsync(ClientCreateDto client);
-        Task<bool> UpdateClientAsync(int clientId, ClientCreateDto updatedClient);
+        Task<bool> UpdateClientAsync(int clientId, ClientUpdateDto updatedClient);
         Task<bool> DeleteClientAsync(int clientId);
 
         // Методы для управления тренерами
