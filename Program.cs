@@ -85,6 +85,16 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhostClient", policy =>
+    {
+        policy.WithOrigins("https://localhost:7228") 
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -98,6 +108,7 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 
+app.UseCors("AllowLocalhostClient");
 app.UseAuthentication();
 app.UseAuthorization();
 
