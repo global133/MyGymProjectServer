@@ -8,6 +8,8 @@
 
         public DateTime Time { get; set; }
 
+        public string Name { get; set; }
+
         public Trainer Trainer { get; set; } = null!;
 
         public Hall Hall { get; set; } = null!;

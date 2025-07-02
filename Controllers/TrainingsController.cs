@@ -143,7 +143,6 @@ namespace MyGymProject.Server.Controllers
         }
 
         [HttpGet("my-schedule")]
-        [Authorize(Roles = "Client")] 
         public async Task<ActionResult<IEnumerable<TrainingResponseDTO>>> GetScheduleForCurrentClient()
         {
             try

@@ -12,10 +12,14 @@ namespace MyGymProject.Server.DTOs.Training
         [Required (ErrorMessage = "Поле время обязательно")]
         public DateTime Time { get; set; }
 
+        [Required (ErrorMessage = "Поле с названием тренировки обязательно")]
+        public string Name { get; set; }
+
         [Required (ErrorMessage = "Поле id тренира обязательно")]
         public int TrainerId { get; set; }
 
         [Required (ErrorMessage = "Поле id зала обязательно")]
         public int HallId { get; set; } 
+
     }
 }
