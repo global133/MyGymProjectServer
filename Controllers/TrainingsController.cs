@@ -163,7 +163,7 @@ namespace MyGymProject.Server.Controllers
             }
         }
 
-        [HttpGet("trainer{trainerId}/trainingName{trainingName}")]
+        [HttpGet("{trainingName}/trainer{trainerId}")]
 
         public async Task<ActionResult<IEnumerable<TrainingResponseDTO>>> GetTrainingsByTrainerAndNameAsync(int trainerId, string trainingName)
         {
