@@ -192,5 +192,19 @@ namespace MyGymProject.Server.Services
                 return Enumerable.Empty<TrainingResponseDTO>();
             }
         }
+
+        public async Task<IEnumerable<TrainingResponseDTO>> GetTrainingsByTrainerAndNameAsync(int trainerId, string trainingName)
+        {
+            try
+            {
+                var trainings = await this._trainingRepository.GetTrainingsByTrainerAndNameAsync(trainerId, trainingName);
+                return this._mapper.Map<IEnumerable<TrainingResponseDTO>>(trainings);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка при получении тренировок по айди тренера и имени тренировки.");
+                return Enumerable.Empty<TrainingResponseDTO>();
+            }
+        }
     }
 }

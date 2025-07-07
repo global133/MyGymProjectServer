@@ -162,5 +162,13 @@ namespace MyGymProject.Server.Controllers
                 return StatusCode(500, "Внутренняя ошибка сервера.");
             }
         }
+
+        [HttpGet("{trainingName}/trainer{trainerId}")]
+
+        public async Task<ActionResult<IEnumerable<TrainingResponseDTO>>> GetTrainingsByTrainerAndNameAsync(int trainerId, string trainingName)
+        {
+            var trainings = await this._trainingService.GetTrainingsByTrainerAndNameAsync(trainerId, trainingName);
+            return Ok(trainings);
+        }
     }
 }

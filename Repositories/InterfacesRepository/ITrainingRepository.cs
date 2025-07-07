@@ -14,5 +14,6 @@ namespace MyGymProject.Server.Repositories.Interfaces
         Task<List<string>> GetClientsForTrainingAsync(int trainingId);
         Task<IEnumerable<Training>> GetAllTrainingsWithClientsAsync();
         Task<IEnumerable<Training>> GetTrainingsByClient(int clientId);
+        Task<List<Training>> GetTrainingsByTrainerAndNameAsync(int trainerId, string trainingName);
     }
 }

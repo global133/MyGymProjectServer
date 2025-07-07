@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Cryptography;
+using MyGymProject.Server.Repositories.InterfacesRepository;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +26,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
 //DI конфигурация
+builder.Services.AddScoped<ITrainingSessionRepository, TrainingSessionRepository>();
+builder.Services.AddScoped<ITrainingSessionService, TrainingSessionService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<ITrainingRepository, TrainingRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();

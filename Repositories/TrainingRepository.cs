@@ -1,9 +1,10 @@
-﻿using MyGymProject.Server.Models;
-using MyGymProject.Server.Repositories.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using MyGymProject.Server.Data;
-using System.Reflection.Metadata.Ecma335;
-using Microsoft.EntityFrameworkCore;
+using MyGymProject.Server.DTOs.Training;
+using MyGymProject.Server.Models;
+using MyGymProject.Server.Repositories.Interfaces;
 using System.Data;
+using System.Reflection.Metadata.Ecma335;
 
 namespace MyGymProject.Server.Repositories
 {
@@ -147,6 +148,17 @@ namespace MyGymProject.Server.Repositories
                 .Include(t => t.Hall)
                 .Include(t => t.Clients)
                 .Where(t => t.Clients.Any(c => c.Id == clientId))
+                .ToListAsync();
+        }
+
+        public async Task<List<Training>> GetTrainingsByTrainerAndNameAsync(int trainerId, string trainingName)
+        {
+            return await _context.Trainings
+                .Include(t => t.Clients)         
+                .Include(t => t.Hall)       
+                .Where(t =>
+                    t.Trainer.Id == trainerId &&
+                    t.Name.Contains(trainingName))
                 .ToListAsync();
         }
     }
