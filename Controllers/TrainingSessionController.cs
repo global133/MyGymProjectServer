@@ -40,7 +40,7 @@ namespace MyGymProject.Server.Controllers
             /// Получить все сессии для тренировки
             /// </summary>
             [HttpGet]
-            public async Task<ActionResult<IEnumerable<TrainingSessionCreateDto>>> GetAllForTraining(int trainingId)
+            public async Task<ActionResult<IEnumerable<TrainingSessionCreateDto>>> GetByTrainingIdAsync(int trainingId)
             {
                 var sessions = await _sessionService.GetByTrainingIdAsync(trainingId);
                 return Ok(sessions);
@@ -125,7 +125,7 @@ namespace MyGymProject.Server.Controllers
             [HttpGet("upcoming")]
             public async Task<ActionResult<IEnumerable<TrainingSessionCreateDto>>> GetUpcomingSessions(int trainingId)
             {
-                var sessions = await _sessionService.GetUpcomingSessionsAsync();
+                var sessions = await _sessionService.GetUpcomingSessionsAsync(trainingId);
                 return Ok(sessions);
             }
         }

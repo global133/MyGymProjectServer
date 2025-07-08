@@ -137,11 +137,19 @@ namespace MyGymProject.Server.Services
             return session.MaxParticipants - clientsCount;
         }
 
-        public async Task<IEnumerable<TrainingSessionReadDto>> GetUpcomingSessionsAsync()
+        public async Task<IEnumerable<TrainingSessionReadDto>> GetUpcomingSessionsAsync(int trainingId)
         {
-            var fromDate = DateTime.Now;
-            var sessions = await _sessionRepo.GetUpcomingSessionsAsync(fromDate);
-            return _mapper.Map<IEnumerable<TrainingSessionReadDto>>(sessions);
+            try
+            {
+                var fromDate = DateTime.UtcNow;
+                var sessions = await _sessionRepo.GetUpcomingSessionsAsync(fromDate, trainingId);
+                return _mapper.Map<IEnumerable<TrainingSessionReadDto>>(sessions);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
     }
 }

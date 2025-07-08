@@ -108,13 +108,14 @@ namespace MyGymProject.Server.Repositories
                 .AnyAsync(c => c.Id == clientId);
         }
 
-        public async Task<IEnumerable<TrainingSession>> GetUpcomingSessionsAsync(DateTime fromDate)
+        public async Task<IEnumerable<TrainingSession>> GetUpcomingSessionsAsync(DateTime fromDate, int trainingId)
         {
-            return await _context.TrainingSessions
-                .Where(ts => ts.StartTime >= fromDate)
+            var data = await _context.TrainingSessions
+                .Where(ts => ts.Training.Id == trainingId && ts.StartTime >= fromDate)
                 .Include(ts => ts.Clients)
                 .OrderBy(ts => ts.StartTime)
                 .ToListAsync();
+            return data;
         }
     }
 }

@@ -22,6 +22,6 @@ namespace MyGymProject.Server.Services.Interfaces
         Task<int> GetAvailableSlotsAsync(int sessionId);
 
         // Получение расписания
-        Task<IEnumerable<TrainingSessionReadDto>> GetUpcomingSessionsAsync();
+        Task<IEnumerable<TrainingSessionReadDto>> GetUpcomingSessionsAsync(int trainingId);
     }
 }

@@ -19,6 +19,6 @@ namespace MyGymProject.Server.Repositories.InterfacesRepository
         Task<bool> IsClientInSessionAsync(int sessionId, int clientId);
 
         // Методы для расписания
-        Task<IEnumerable<TrainingSession>> GetUpcomingSessionsAsync(DateTime fromDate);
+        Task<IEnumerable<TrainingSession>> GetUpcomingSessionsAsync(DateTime fromDate, int trainingId);
     }
 }
