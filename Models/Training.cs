@@ -13,5 +13,7 @@
         public Trainer Trainer { get; set; } = null!;
 
         public Hall Hall { get; set; } = null!;
+
+        public List<Client> Clients { get; set; } = new List<Client>();
     }
 }

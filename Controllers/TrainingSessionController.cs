@@ -128,6 +128,8 @@ namespace MyGymProject.Server.Controllers
                 var sessions = await _sessionService.GetUpcomingSessionsAsync(trainingId);
                 return Ok(sessions);
             }
+
+            [HttpGet("")]
         }
     }
 }

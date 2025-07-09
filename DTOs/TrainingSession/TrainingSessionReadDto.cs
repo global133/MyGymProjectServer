@@ -8,7 +8,7 @@ namespace MyGymProject.Server.DTOs.TrainingSession
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public int MaxParticipants { get; set; }
-        public MyGymProject.Server.Models.TrainingSession? TrainingSession { get; set; }
+        public int TrainingId { get; set; }
         public List<ClientReadDto> Clients { get; set; } = new();
     }
 }
