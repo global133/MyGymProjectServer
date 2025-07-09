@@ -23,5 +23,7 @@ namespace MyGymProject.Server.Services.Interfaces
 
         // Получение расписания
         Task<IEnumerable<TrainingSessionReadDto>> GetUpcomingSessionsAsync(int trainingId);
+
+        Task<IEnumerable<TrainingSessionReadDto>> GetWorkoutsByClientId(int clientId);
     }
 }

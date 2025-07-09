@@ -151,5 +151,19 @@ namespace MyGymProject.Server.Services
                 throw;
             }
         }
+
+        public async Task<IEnumerable<TrainingSessionReadDto>> GetWorkoutsByClientId(int clientId)
+        {
+            try
+            {
+                var workouts = await _sessionRepo.GetWorkoutsByClientId(clientId);
+                return _mapper.Map<IEnumerable<TrainingSessionReadDto>>(workouts);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
     }
 }

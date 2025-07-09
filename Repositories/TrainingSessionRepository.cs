@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyGymProject.Server.Data;
+using MyGymProject.Server.DTOs.TrainingSession;
 using MyGymProject.Server.Models;
 using MyGymProject.Server.Repositories.InterfacesRepository;
 using System;
@@ -116,6 +117,15 @@ namespace MyGymProject.Server.Repositories
                 .OrderBy(ts => ts.StartTime)
                 .ToListAsync();
             return data;
+        }
+
+        public async Task<IEnumerable<TrainingSession>> GetWorkoutsByClientId(int clientId)
+        {
+            return await _context.TrainingSessions
+                .Include(ts => ts.Clients) 
+                .Include(ts => ts.Training) 
+                .Where(ts => ts.Clients.Any(c => c.Id == clientId)) 
+                .ToListAsync();
         }
     }
 }

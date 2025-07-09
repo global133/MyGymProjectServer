@@ -18,7 +18,7 @@ namespace MyGymProject.Server.Repositories.InterfacesRepository
         Task<bool> RemoveClientFromSessionAsync(int sessionId, int clientId);
         Task<bool> IsClientInSessionAsync(int sessionId, int clientId);
 
-        // Методы для расписания
         Task<IEnumerable<TrainingSession>> GetUpcomingSessionsAsync(DateTime fromDate, int trainingId);
+        Task<IEnumerable<TrainingSession>> GetWorkoutsByClientId(int clientId);
     }
 }
