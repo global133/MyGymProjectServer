@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyGymProject.Server.DTOs.Client;
+using MyGymProject.Server.Models;
 using MyGymProject.Server.Services.Interfaces;
 
 
@@ -8,7 +9,7 @@ namespace MyGymProject.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public class ClientsController : ControllerBase
     {
         private readonly IClientService _clientService;
@@ -77,6 +78,39 @@ namespace MyGymProject.Server.Controllers
                 return NotFound();
 
             return NoContent();
+        }
+
+        [HttpGet("{clientId}/addtotraining{trainingId}")]
+
+        public async Task<ActionResult> AddClientToTrainingSession(int clientId, int trainingId)
+        {
+            try
+            {
+                var result = await _clientService.AddTrainingAsync(clientId, trainingId);
+                return Created();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpGet("schedule{id}")]
+
+        public async Task<ActionResult> GetWorkoutByCLientId(int id)
+        {
+            try
+            {
+                var result = await _clientService.GetWorkoutByClientId(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    Message = "Произошла ошибка"
+                });
+            }
         }
     }
 }

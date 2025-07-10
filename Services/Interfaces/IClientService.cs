@@ -1,4 +1,5 @@
 ﻿using MyGymProject.Server.DTOs.Client;
+using MyGymProject.Server.DTOs.TrainingSession;
 using MyGymProject.Server.Models;
 
 namespace MyGymProject.Server.Services.Interfaces
@@ -11,6 +12,7 @@ namespace MyGymProject.Server.Services.Interfaces
         Task<bool> AddAsync(ClientCreateDto createDto);
         Task<bool> UpdateAsync(int id, ClientUpdateDto updateDto);
         Task<bool> DeleteAsync(int id);
-        Task<bool> AddTrainingAsync(int clientId, Training training);
+        Task<bool> AddTrainingAsync(int clientId, int trainingSessionId);
+        Task<IEnumerable<TrainingSessionReadDto>> GetWorkoutByClientId(int clientId);
     }
 }

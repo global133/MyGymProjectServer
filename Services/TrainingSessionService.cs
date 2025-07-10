@@ -121,22 +121,6 @@ namespace MyGymProject.Server.Services
             return await _sessionRepo.IsClientInSessionAsync(sessionId, clientId);
         }
 
-        public async Task<bool> IsSessionAvailableAsync(int sessionId)
-        {
-            var clientsCount = await _sessionRepo.GetClientsCountAsync(sessionId);
-            var session = await _sessionRepo.GetByIdAsync(sessionId);
-            return session != null && clientsCount < session.MaxParticipants;
-        }
-
-        public async Task<int> GetAvailableSlotsAsync(int sessionId)
-        {
-            var session = await _sessionRepo.GetByIdAsync(sessionId);
-            if (session == null) return 0;
-
-            var clientsCount = await _sessionRepo.GetClientsCountAsync(sessionId);
-            return session.MaxParticipants - clientsCount;
-        }
-
         public async Task<IEnumerable<TrainingSessionReadDto>> GetUpcomingSessionsAsync(int trainingId)
         {
             try

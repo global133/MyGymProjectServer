@@ -99,25 +99,6 @@ namespace MyGymProject.Server.Controllers
                 return success ? NoContent() : NotFound();
             }
 
-            /// <summary>
-            /// Проверить доступность сессии
-            /// </summary>
-            [HttpGet("{sessionId}/availability")]
-            public async Task<ActionResult<bool>> CheckAvailability(int sessionId)
-            {
-                var isAvailable = await _sessionService.IsSessionAvailableAsync(sessionId);
-                return Ok(isAvailable);
-            }
-
-            /// <summary>
-            /// Получить количество свободных мест
-            /// </summary>
-            [HttpGet("{sessionId}/slots")]
-            public async Task<ActionResult<int>> GetAvailableSlots(int sessionId)
-            {
-                var slots = await _sessionService.GetAvailableSlotsAsync(sessionId);
-                return Ok(slots);
-            }
 
             /// <summary>
             /// Получить предстоящие сессии
@@ -129,7 +110,6 @@ namespace MyGymProject.Server.Controllers
                 return Ok(sessions);
             }
 
-            [HttpGet("")]
         }
     }
 }

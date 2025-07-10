@@ -17,10 +17,6 @@ namespace MyGymProject.Server.Services.Interfaces
         Task<bool> RemoveClientFromSessionAsync(int sessionId, int clientId);
         Task<bool> IsClientInSessionAsync(int sessionId, int clientId);
 
-        // Проверки доступности
-        Task<bool> IsSessionAvailableAsync(int sessionId);
-        Task<int> GetAvailableSlotsAsync(int sessionId);
-
         // Получение расписания
         Task<IEnumerable<TrainingSessionReadDto>> GetUpcomingSessionsAsync(int trainingId);
     }

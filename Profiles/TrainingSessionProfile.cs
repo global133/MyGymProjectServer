@@ -10,6 +10,7 @@ namespace MyGymProject.Server.Profiles
         public TrainingSessionProfile()
         {
             CreateMap<TrainingSession, TrainingSessionReadDto>();
+   
 
             CreateMap<TrainingSessionCreateDto, TrainingSession>()
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => DateTime.SpecifyKind(src.StartTime, DateTimeKind.Utc)))

@@ -3,6 +3,7 @@ using MyGymProject.Server.Repositories.Interfaces;
 using MyGymProject.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
+using MyGymProject.Server.DTOs.TrainingSession;
 
 namespace MyGymProject.Server.Repositories
 {
@@ -60,16 +61,36 @@ namespace MyGymProject.Server.Repositories
             return false;
         }
 
-        public async Task<bool> AddTrainingToClientAsync(int clientId, Training training)
+        public async Task<bool> AddTrainingToClientAsync(int clientId, int trainingId)
         {
-            var client = await _context.Clients.Include(c => c.Trainings)
-                                            .FirstOrDefaultAsync(c => c.Id == clientId);
-            if (client == null)
-                throw new Exception("Клиент не найден");
+            try
+            {
+                var client = await _context.Clients.FirstOrDefaultAsync(c => c.Id == clientId);
+                if (client == null)
+                    throw new Exception("Клиент не найден");
 
-            client.Trainings.Add(training);
-            await _context.SaveChangesAsync();
-            return true;
+                var session = await _context.TrainingSessions.FirstOrDefaultAsync(ts => ts.Id == trainingId);
+                if (session == null)
+                    throw new Exception("Сессия не найдена");
+
+                client.TrainingSessions.Add(session);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<TrainingSession>> GetWorkoutByClientID(int clientId)
+        {
+            var sesssions = await _context.TrainingSessions
+                .Include(ts => ts.Training)
+                .Include(ts => ts.Clients)
+                .Where(ts => ts.Clients.Any(c => c.Id == clientId))
+                .ToListAsync();
+            return sesssions;
         }
     }
 }

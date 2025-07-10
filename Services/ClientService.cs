@@ -4,6 +4,7 @@ using MyGymProject.Server.Repositories.Interfaces;
 using MyGymProject.Server.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using MyGymProject.Server.DTOs.TrainingSession;
 
 namespace MyGymProject.Server.Services
 {
@@ -123,17 +124,35 @@ namespace MyGymProject.Server.Services
             }
         }
 
-        public async Task<bool> AddTrainingAsync(int clientId, Training training)
+        public async Task<bool> AddTrainingAsync(int clientId, int trainingSessionId)
         {
             try
             {
-                await _clientRepository.AddTrainingToClientAsync(clientId, training);
+                await _clientRepository.AddTrainingToClientAsync(clientId, trainingSessionId);
                 return true;
             }
             catch (Exception ex)
             {
                 this._logger.LogError(ex.Message, $"Ошибка при добавлении тренировки клиенту {clientId}");
                 return false;
+            }
+        }
+
+        public async Task<IEnumerable<TrainingSessionReadDto>> GetWorkoutByClientId(int clientId)
+        {
+            try
+            {
+                var workouts = await this._clientRepository.GetWorkoutByClientID(clientId);
+                if (workouts == null)
+                {
+                    return Enumerable.Empty<TrainingSessionReadDto>();
+                }
+                return this._mapper.Map<IEnumerable<TrainingSessionReadDto>>(workouts);
+            }
+            catch (Exception ex)
+            {
+                this._logger.LogError(ex, "Error getting workouts for client {ClientId}", clientId);
+                throw;
             }
         }
     }

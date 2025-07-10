@@ -11,6 +11,7 @@ namespace MyGymProject.Server.Repositories.Interfaces
         Task AddAsync(Client client);
         Task <bool>UpdateAsync(Client client);
         Task <bool>DeleteAsync(int id);
-        Task <bool> AddTrainingToClientAsync(int clientId, Training training);
+        Task <bool> AddTrainingToClientAsync(int clientId,int trainingSessionId);
+        Task<IEnumerable<TrainingSession>> GetWorkoutByClientID(int clientId);
     }
 }
