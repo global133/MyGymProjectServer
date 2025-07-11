@@ -1,5 +1,4 @@
 ﻿using MyGymProject.Server.DTOs.Trainer;
-using MyGymProject.Server.DTOs.Training;
 using MyGymProject.Server.Models;
 using MyGymProject.Server.Repositories;
 using MyGymProject.Server.Repositories.Interfaces;

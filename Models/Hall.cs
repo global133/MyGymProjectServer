@@ -8,6 +8,6 @@
 
         public string Description { get; set; } = null!;
 
-        public List<Training> Trainings {get; set;} = new List<Training>();
+        public List<TrainingSession> Trainings {get; set;} = new List<TrainingSession>();
     }
 }

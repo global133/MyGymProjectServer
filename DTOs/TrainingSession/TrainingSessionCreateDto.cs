@@ -5,11 +5,11 @@ namespace MyGymProject.Server.DTOs.TrainingSession
 {
     public class TrainingSessionCreateDto
     {
-        [Required]
+        public string Name { get; set; } = null!;
+        public bool IsGroup { get; set; }
         public DateTime StartTime { get; set; }
-
-        [Required]
         public DateTime EndTime { get; set; }
-
+        public int TrainerId { get; set; }
+        public int HallId { get; set; }
     }
 }

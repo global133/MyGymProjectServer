@@ -73,7 +73,7 @@ namespace MyGymProject.Server.Repositories
                 if (session == null)
                     throw new Exception("Сессия не найдена");
 
-                client.TrainingSessions.Add(session);
+                //client.TrainingSessions.Add(session);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -86,7 +86,7 @@ namespace MyGymProject.Server.Repositories
         public async Task<IEnumerable<TrainingSession>> GetWorkoutByClientID(int clientId)
         {
             var sesssions = await _context.TrainingSessions
-                .Include(ts => ts.Training)
+                .Include(ts => ts.Name)
                 .Include(ts => ts.Clients)
                 .Where(ts => ts.Clients.Any(c => c.Id == clientId))
                 .ToListAsync();

@@ -12,10 +12,7 @@ namespace MyGymProject.Server.Profiles
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.Trainings, opt => opt.Ignore());
 
-            CreateMap<Hall, HallDtoResponse>()
-                .ForMember(dest => dest.Trainings, opt => opt.MapFrom(src =>
-                    src.Trainings.Select(t => $"Training at {t.Time:yyyy-MM-dd HH:mm}") 
-                ));
+            CreateMap<Hall, HallDtoResponse>();
         }
     }
 }

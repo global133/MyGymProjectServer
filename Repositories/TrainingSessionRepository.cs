@@ -15,61 +15,52 @@ namespace MyGymProject.Server.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<TrainingSession>> GetAllSessionsAsync()
+        public async Task<TrainingSession?> GetTraining(int id)
         {
             return await _context.TrainingSessions
-                .Include(ts => ts.Training)
-                .Include(ts => ts.Clients)
-                .OrderBy(ts => ts.StartTime)
-                .ToListAsync();
-        }
-        public async Task<TrainingSession?> GetByIdAsync(int id)
-        {
-            return await _context.TrainingSessions
-                .Include(ts => ts.Training)
+                .Include(ts => ts.Trainer)
+                .Include(ts => ts.Hall)
                 .Include(ts => ts.Clients)
                 .FirstOrDefaultAsync(ts => ts.Id == id);
         }
 
-        public async Task<IEnumerable<TrainingSession>> GetByTrainingIdAsync(int trainingId)
+        public async Task<TrainingSession> AddTraining(TrainingSession training)
         {
-            return await _context.TrainingSessions
-                .Where(ts => ts.Training.Id == trainingId)
-                .Include(ts => ts.Clients)
-                .OrderBy(ts => ts.StartTime)
-                .ToListAsync();
-        }
+            training.Trainer = await _context.Trainers.FindAsync(training.Trainer.Id)
+                                ?? throw new Exception("Trainer not found");
+            training.Hall = await _context.Halls.FindAsync(training.Hall.Id)
+                            ?? throw new Exception("Hall not found");
 
-        public async Task<TrainingSession> AddAsync(TrainingSession session)
-        {
-            await _context.TrainingSessions.AddAsync(session);
+            await _context.TrainingSessions.AddAsync(training);
             await _context.SaveChangesAsync();
-            return session;
+            return training;
         }
 
-        public async Task UpdateAsync(TrainingSession session)
+        public async Task<bool> UpdateTraining(TrainingSession session)
         {
             _context.TrainingSessions.Update(session);
             await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteTraining(int id)
         {
-            var session = await GetByIdAsync(id);
-            if (session != null)
-            {
-                _context.TrainingSessions.Remove(session);
-                await _context.SaveChangesAsync();
-            }
-        }
+            var training = await _context.TrainingSessions.FindAsync(id);
+            if (training == null)
+                return false;
 
-        public async Task<int> GetClientsCountAsync(int sessionId)
+            _context.TrainingSessions.Remove(training);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<IEnumerable<TrainingSession>> GetAllSessionsAsync()
         {
-            var session = await _context.TrainingSessions
+            return await _context.TrainingSessions
+                .Include(ts => ts.Trainer)
+                .Include(ts => ts.Hall)
                 .Include(ts => ts.Clients)
-                .FirstOrDefaultAsync(ts => ts.Id == sessionId);
-
-            return session?.Clients.Count ?? 0;
+                .OrderBy(ts => ts.StartTime)
+                .ToListAsync();
         }
 
         public async Task<bool> AddClientToSessionAsync(int sessionId, Client client)
@@ -78,10 +69,14 @@ namespace MyGymProject.Server.Repositories
                 .Include(ts => ts.Clients)
                 .FirstOrDefaultAsync(ts => ts.Id == sessionId);
 
-            if (session == null || session.Clients.Any(c => c.Id == client.Id))
+            if (session == null)
                 return false;
 
-            session.Clients.Add(client);
+            var existingClient = await _context.Clients.FindAsync(client.Id);
+            if (existingClient == null || session.Clients.Any(c => c.Id == client.Id))
+                return false;
+
+            session.Clients.Add(existingClient);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -99,23 +94,25 @@ namespace MyGymProject.Server.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
-
-        public async Task<bool> IsClientInSessionAsync(int sessionId, int clientId)
-        {
-            return await _context.TrainingSessions
-                .Where(ts => ts.Id == sessionId)
-                .SelectMany(ts => ts.Clients)
-                .AnyAsync(c => c.Id == clientId);
-        }
-
         public async Task<IEnumerable<TrainingSession>> GetUpcomingSessionsAsync(DateTime fromDate, int trainingId)
         {
-            var data = await _context.TrainingSessions
-                .Where(ts => ts.Training.Id == trainingId && ts.StartTime >= fromDate)
+            return await _context.TrainingSessions
+                .Where(ts => ts.Id == trainingId && ts.StartTime >= fromDate)
                 .Include(ts => ts.Clients)
+                .Include(ts => ts.Trainer)
+                .Include(ts => ts.Hall)
                 .OrderBy(ts => ts.StartTime)
                 .ToListAsync();
-            return data;
+        }
+
+        public async Task<IEnumerable<TrainingSession>> GetSessionsByTrainerIdAsync(int trainerId)
+        {
+            return await _context.TrainingSessions
+                .Where(ts => ts.Trainer.Id == trainerId)
+                .Include(ts => ts.Clients)
+                .Include(ts => ts.Hall)
+                .OrderBy(ts => ts.StartTime)
+                .ToListAsync();
         }
     }
 }

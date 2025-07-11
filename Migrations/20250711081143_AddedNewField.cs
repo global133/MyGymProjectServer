@@ -27,11 +27,11 @@ namespace MyGymProject.Server.Migrations
                 columns: table => new
                 {
                     ClientsId = table.Column<int>(type: "integer", nullable: false),
-                    SessionsId = table.Column<int>(type: "integer", nullable: false)
+                    TrainingSessionsId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClientTrainingSession", x => new { x.ClientsId, x.SessionsId });
+                    table.PrimaryKey("PK_ClientTrainingSession", x => new { x.ClientsId, x.TrainingSessionsId });
                     table.ForeignKey(
                         name: "FK_ClientTrainingSession_Clients_ClientsId",
                         column: x => x.ClientsId,
@@ -39,17 +39,17 @@ namespace MyGymProject.Server.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClientTrainingSession_TrainingSessions_SessionsId",
-                        column: x => x.SessionsId,
+                        name: "FK_ClientTrainingSession_TrainingSessions_TrainingSessionsId",
+                        column: x => x.TrainingSessionsId,
                         principalTable: "TrainingSessions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientTrainingSession_SessionsId",
+                name: "IX_ClientTrainingSession_TrainingSessionsId",
                 table: "ClientTrainingSession",
-                column: "SessionsId");
+                column: "TrainingSessionsId");
         }
 
         /// <inheritdoc />

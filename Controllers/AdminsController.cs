@@ -2,7 +2,7 @@
 using MyGymProject.Server.DTOs.Client;
 using MyGymProject.Server.DTOs.Hall;
 using MyGymProject.Server.DTOs.Trainer;
-using MyGymProject.Server.DTOs.Training;
+using MyGymProject.Server.DTOs.TrainingSession;
 using MyGymProject.Server.Services;
 using MyGymProject.Server.Services.Interfaces;
 
@@ -124,14 +124,14 @@ namespace MyGymProject.Server.Controllers
         }
 
         [HttpPost("trainings")]
-        public async Task<IActionResult> AddTraining([FromBody] TrainingCreateDto dto)
+        public async Task<IActionResult> AddTraining([FromBody] TrainingSessionCreateDto dto)
         {
             var training = await this._adminService.AddTrainingAsync(dto);
             return Ok(training);
         }
 
         [HttpPut("trainings/{id}")]
-        public async Task<IActionResult> UpdateTraining(int id, [FromBody] TrainingCreateDto dto)
+        public async Task<IActionResult> UpdateTraining(int id, [FromBody] TrainingSessionCreateDto dto)
         {
             var success = await this._adminService.UpdateTrainingAsync(id, dto);
             if (!success)

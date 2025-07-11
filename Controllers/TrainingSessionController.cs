@@ -10,7 +10,7 @@ namespace MyGymProject.Server.Controllers
     namespace MyGymProject.Server.Controllers
     {
         [ApiController]
-        [Route("api/trainings/{trainingId}/sessions")]
+        [Route("api/trainings")]
         public class TrainingSessionsController : ControllerBase
         {
             private readonly ITrainingSessionService _sessionService;
@@ -35,24 +35,13 @@ namespace MyGymProject.Server.Controllers
                 var session = await _sessionService.GetByIdAsync(id);
                 return session == null ? NotFound() : Ok(session);
             }
-
-            /// <summary>
-            /// Получить все сессии для тренировки
-            /// </summary>
-            [HttpGet]
-            public async Task<ActionResult<IEnumerable<TrainingSessionCreateDto>>> GetByTrainingIdAsync(int trainingId)
-            {
-                var sessions = await _sessionService.GetByTrainingIdAsync(trainingId);
-                return Ok(sessions);
-            }
-
             /// <summary>
             /// Создать новую сессию
             /// </summary>
             [HttpPost]
-            public async Task<ActionResult<TrainingSessionCreateDto>> Create(int trainingId, TrainingSessionCreateDto dto)
+            public async Task<ActionResult<TrainingSessionCreateDto>> Create(TrainingSessionCreateDto dto)
             {
-                var createdSession = await _sessionService.CreateSessionAsync(trainingId, dto);
+                var createdSession = await _sessionService.CreateSessionAsync(dto);
                 if (createdSession == null) 
                     return BadRequest("Не удалось создать сессию");
                  
@@ -82,10 +71,10 @@ namespace MyGymProject.Server.Controllers
             /// <summary>
             /// Добавить клиента на сессию
             /// </summary>
-            [HttpPost("{sessionId}/clients/{clientId}")]
-            public async Task<IActionResult> AddClient(int sessionId, int clientId)
+            [HttpPost("{trainingId}/clients/{clientId}")]
+            public async Task<IActionResult> AddClient(int trainingId, int clientId)
             {
-                var success = await _sessionService.AddClientToSessionAsync(sessionId, clientId);
+                var success = await _sessionService.AddClientToSessionAsync(trainingId, clientId);
                 return success ? Ok() : BadRequest("Не удалось добавить клиента");
             }
 
@@ -110,6 +99,19 @@ namespace MyGymProject.Server.Controllers
                 return Ok(sessions);
             }
 
+            [HttpGet("bytrainer/{trainerId}")]
+            public async Task<ActionResult<IEnumerable<TrainingSessionReadDto>>> GetByTrainer(int trainerId)
+            {
+                try
+                {
+                    var sessions = await _sessionService.GetSessionsByTrainerAsync(trainerId);
+                    return Ok(sessions);
+                }
+                catch(Exception ex)
+                {
+                    throw;
+                }
+            }
         }
     }
 }

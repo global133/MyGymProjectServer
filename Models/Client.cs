@@ -11,6 +11,5 @@
         public string Login { get; set; } = null!;
         public string Password { get; set; } = null!;
         public List<TrainingSession> TrainingSessions { get; set; } = new List<TrainingSession>();
-        public List<Training> Trainings { get; set; } = new List<Training>();
     }
 }

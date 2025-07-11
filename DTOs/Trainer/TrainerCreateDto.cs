@@ -7,6 +7,8 @@ namespace MyGymProject.Server.DTOs.Trainer
         [Required(ErrorMessage = "Полное имя обязательно")]
         public string FullName { get; set; } = null!;
 
+        public string Description { get; set; }
+
         [Required(ErrorMessage = "Дата рождения обязательна")]
         public DateTime DateOfBirth { get; set; }
 

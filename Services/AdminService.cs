@@ -9,9 +9,9 @@ using System.Reflection.Metadata.Ecma335;
 using MyGymProject.Server.Services.Interfaces;
 using MyGymProject.Server.DTOs.Hall;
 using MyGymProject.Server.DTOs.Trainer;
-using MyGymProject.Server.DTOs.Training;
 using System.Collections;
 using Microsoft.AspNetCore.Identity;
+using MyGymProject.Server.DTOs.TrainingSession;
 
 namespace MyGymProject.Server.Services
 {
@@ -21,7 +21,7 @@ namespace MyGymProject.Server.Services
         private readonly IClientService _clientService;
         private readonly ITrainerService _trainerService;
         private readonly IHallService _hallService;
-        private readonly ITrainingService _trainingService;
+        private readonly ITrainingSessionService _trainingService;
         private readonly IPasswordHasher<object> _passwordHasher;
 
         private readonly IMapper _mapper;
@@ -34,7 +34,7 @@ namespace MyGymProject.Server.Services
             IClientService clientService,
             ITrainerService trainerService,
             IHallService hallService,
-            ITrainingService trainingService
+            ITrainingSessionService trainingService
             )
         {
             this._adminRepository = adminRepository;
@@ -297,24 +297,24 @@ namespace MyGymProject.Server.Services
 
         #region Trainings
 
-        public async Task<IEnumerable<TrainingResponseDTO>> GetAllTrainingsAsync()
+        public async Task<IEnumerable<TrainingSessionReadDto>> GetAllTrainingsAsync()
         {
             try
             {
-                return await this._trainingService.GetAllTrainingsWithDetailsAsync();
+                return await this._trainingService.GetAllSessionsAsync();
             }
             catch (Exception ex)
             {
                 this._logger.LogError(ex, "Ошибка при получении всех тренировок");
-                return Enumerable.Empty<TrainingResponseDTO>();
+                return Enumerable.Empty<TrainingSessionReadDto>();
             }
         }
 
-        public async Task<TrainingResponseDTO?> GetTrainingByIdAsync(int trainingId)
+        public async Task<TrainingSessionReadDto?> GetTrainingByIdAsync(int trainingId)
         {
             try
             {
-                return await this._trainingService.GetTraining(trainingId);
+                return await this._trainingService.GetByIdAsync(trainingId);
             }
             catch (Exception ex)
             {
@@ -323,11 +323,11 @@ namespace MyGymProject.Server.Services
             }
         }
 
-        public async Task<TrainingResponseDTO?> AddTrainingAsync(TrainingCreateDto dto)
+        public async Task<TrainingSessionReadDto?> AddTrainingAsync(TrainingSessionCreateDto dto)
         {
             try
             {
-                return await this._trainingService.CreateTraining(dto);
+                return await this._trainingService.CreateSessionAsync(dto);
             }
             catch (Exception ex)
             {
@@ -336,11 +336,11 @@ namespace MyGymProject.Server.Services
             }
         }
 
-        public async Task<bool> UpdateTrainingAsync(int trainingId, TrainingCreateDto dto)
+        public async Task<bool> UpdateTrainingAsync(int trainingId, TrainingSessionCreateDto dto)
         {
             try
             {
-                return await this._trainingService.UpdateTraining(trainingId, dto);
+                return await this._trainingService.UpdateSessionAsync(trainingId, dto);
             }
             catch (Exception ex)
             {
@@ -353,7 +353,7 @@ namespace MyGymProject.Server.Services
         {
             try
             {
-                return await this._trainingService.DeleteTraining(trainingId);
+                return await this._trainingService.DeleteSessionAsync(trainingId);
             }
             catch (Exception ex)
             {

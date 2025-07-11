@@ -2,7 +2,7 @@
 using MyGymProject.Server.DTOs.Client;
 using MyGymProject.Server.DTOs.Hall;
 using MyGymProject.Server.DTOs.Trainer;
-using MyGymProject.Server.DTOs.Training;
+using MyGymProject.Server.DTOs.TrainingSession;
 using MyGymProject.Server.Models;
 
 namespace MyGymProject.Server.Services.Interfaces
@@ -32,10 +32,10 @@ namespace MyGymProject.Server.Services.Interfaces
         Task<bool> DeleteTrainerAsync(int trainerId);
 
         // Методы для управления тренировками
-        Task<IEnumerable<TrainingResponseDTO>> GetAllTrainingsAsync();
-        Task<TrainingResponseDTO?> GetTrainingByIdAsync(int trainingId);
-        Task<TrainingResponseDTO> AddTrainingAsync(TrainingCreateDto training);
-        Task<bool> UpdateTrainingAsync(int trainingId, TrainingCreateDto updatedTraining);
+        Task<IEnumerable<TrainingSessionReadDto>> GetAllTrainingsAsync();
+        Task<TrainingSessionReadDto?> GetTrainingByIdAsync(int trainingId);
+        Task<TrainingSessionReadDto> AddTrainingAsync(TrainingSessionCreateDto training);
+        Task<bool> UpdateTrainingAsync(int trainingId, TrainingSessionCreateDto updatedTraining);
         Task<bool> DeleteTrainingAsync(int trainingId);
 
         // Методы для управления залами

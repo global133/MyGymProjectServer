@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyGymProject.Server.Migrations
 {
     [DbContext(typeof(DataBaseConnection))]
-    [Migration("20250609142151_AddTrainerDescription")]
-    partial class AddTrainerDescription
+    [Migration("20250711080306_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,21 +24,6 @@ namespace MyGymProject.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("ClientTraining", b =>
-                {
-                    b.Property<int>("ClientsId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TrainingsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ClientsId", "TrainingsId");
-
-                    b.HasIndex("TrainingsId");
-
-                    b.ToTable("ClientTraining");
-                });
 
             modelBuilder.Entity("MyGymProject.Server.Models.Admin", b =>
                 {
@@ -119,7 +104,12 @@ namespace MyGymProject.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("TrainingSessionId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TrainingSessionId");
 
                     b.ToTable("Clients");
                 });
@@ -199,7 +189,7 @@ namespace MyGymProject.Server.Migrations
                     b.ToTable("Trainers");
                 });
 
-            modelBuilder.Entity("MyGymProject.Server.Models.Training", b =>
+            modelBuilder.Entity("MyGymProject.Server.Models.TrainingSession", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -207,13 +197,20 @@ namespace MyGymProject.Server.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("HallId")
                         .HasColumnType("integer");
 
                     b.Property<bool>("IsGroup")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("Time")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("TrainerId")
@@ -225,25 +222,17 @@ namespace MyGymProject.Server.Migrations
 
                     b.HasIndex("TrainerId");
 
-                    b.ToTable("Trainings");
+                    b.ToTable("TrainingSessions");
                 });
 
-            modelBuilder.Entity("ClientTraining", b =>
+            modelBuilder.Entity("MyGymProject.Server.Models.Client", b =>
                 {
-                    b.HasOne("MyGymProject.Server.Models.Client", null)
-                        .WithMany()
-                        .HasForeignKey("ClientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyGymProject.Server.Models.Training", null)
-                        .WithMany()
-                        .HasForeignKey("TrainingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("MyGymProject.Server.Models.TrainingSession", null)
+                        .WithMany("Clients")
+                        .HasForeignKey("TrainingSessionId");
                 });
 
-            modelBuilder.Entity("MyGymProject.Server.Models.Training", b =>
+            modelBuilder.Entity("MyGymProject.Server.Models.TrainingSession", b =>
                 {
                     b.HasOne("MyGymProject.Server.Models.Hall", "Hall")
                         .WithMany("Trainings")
@@ -270,6 +259,11 @@ namespace MyGymProject.Server.Migrations
             modelBuilder.Entity("MyGymProject.Server.Models.Trainer", b =>
                 {
                     b.Navigation("Trainings");
+                });
+
+            modelBuilder.Entity("MyGymProject.Server.Models.TrainingSession", b =>
+                {
+                    b.Navigation("Clients");
                 });
 #pragma warning restore 612, 618
         }
