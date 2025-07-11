@@ -63,7 +63,7 @@ namespace MyGymProject.Server.Repositories
                 .ToListAsync();
         }
 
-        public async Task<bool> AddClientToSessionAsync(int sessionId, Client client)
+        public async Task<bool> AddClientToSessionAsync(int sessionId, int clientId)
         {
             var session = await _context.TrainingSessions
                 .Include(ts => ts.Clients)
@@ -72,8 +72,8 @@ namespace MyGymProject.Server.Repositories
             if (session == null)
                 return false;
 
-            var existingClient = await _context.Clients.FindAsync(client.Id);
-            if (existingClient == null || session.Clients.Any(c => c.Id == client.Id))
+            var existingClient = await _context.Clients.FindAsync(clientId);
+            if (existingClient == null || session.Clients.Any(c => c.Id == clientId))
                 return false;
 
             session.Clients.Add(existingClient);

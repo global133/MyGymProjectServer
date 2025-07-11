@@ -10,7 +10,7 @@ namespace MyGymProject.Server.Repositories.InterfacesRepository
         Task<TrainingSession> AddTraining(TrainingSession training);
         Task<bool> UpdateTraining(TrainingSession updatedTraining);
         Task<bool> DeleteTraining(int id);
-        Task<bool> AddClientToSessionAsync(int sessionId, Client client);
+        Task<bool> AddClientToSessionAsync(int sessionId, int clientId);
         Task<bool> RemoveClientFromSessionAsync(int sessionId, int clientId);
         Task<IEnumerable<TrainingSession>> GetUpcomingSessionsAsync(DateTime fromDate, int trainingId);
 

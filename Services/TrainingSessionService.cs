@@ -83,12 +83,8 @@ public class TrainingSessionService : ITrainingSessionService
     }
 
     public async Task<bool> AddClientToSessionAsync(int sessionId, int clientId)
-    {
-        var client = await _clientRepo.GetByIdAsync(clientId);
-        if (client == null)
-            return false;
-
-        return await _sessionRepo.AddClientToSessionAsync(sessionId, client);
+    { 
+        return await _sessionRepo.AddClientToSessionAsync(sessionId, clientId);
     }
 
     public async Task<bool> RemoveClientFromSessionAsync(int sessionId, int clientId)

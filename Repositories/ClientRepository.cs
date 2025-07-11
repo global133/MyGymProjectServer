@@ -86,7 +86,8 @@ namespace MyGymProject.Server.Repositories
         public async Task<IEnumerable<TrainingSession>> GetWorkoutByClientID(int clientId)
         {
             var sesssions = await _context.TrainingSessions
-                .Include(ts => ts.Name)
+                .Include(ts => ts.Trainer)
+                .Include(ts => ts.Hall)
                 .Include(ts => ts.Clients)
                 .Where(ts => ts.Clients.Any(c => c.Id == clientId))
                 .ToListAsync();
