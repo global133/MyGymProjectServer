@@ -75,7 +75,7 @@ namespace MyGymProject.Server.Controllers
             public async Task<IActionResult> AddClient(int trainingId, int clientId)
             {
                 var success = await _sessionService.AddClientToSessionAsync(trainingId, clientId);
-                return success ? Ok() : BadRequest("Не удалось добавить клиента");
+                return success ? Ok() : BadRequest("Вы уже записаны на эту тренировку");
             }
 
             /// <summary>

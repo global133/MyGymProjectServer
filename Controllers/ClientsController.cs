@@ -80,7 +80,7 @@ namespace MyGymProject.Server.Controllers
             return NoContent();
         }
 
-        [HttpGet("{clientId}/addtotraining{trainingId}")]
+        [HttpPost("{clientId}/addtotraining{trainingId}")]
 
         public async Task<ActionResult> AddClientToTrainingSession(int clientId, int trainingId)
         {
