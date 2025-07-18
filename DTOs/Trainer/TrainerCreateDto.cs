@@ -39,5 +39,6 @@ namespace MyGymProject.Server.DTOs.Trainer
         [Required(ErrorMessage = "Пароль обязателен")]
         [MinLength(6, ErrorMessage = "Пароль должен содержать минимум 6 символов")]
         public string Password { get; set; } = null!;
+        public string ImgPath { get; set; } = null!;
     }
 }

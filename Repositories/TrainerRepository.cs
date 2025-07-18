@@ -32,9 +32,16 @@ namespace MyGymProject.Server.Repositories
 
         public async Task<Trainer> AddAsync(Trainer trainer)
         {
-            await this._context.Trainers.AddAsync(trainer);
-            await this._context.SaveChangesAsync();
-            return trainer;
+            try
+            {
+                await this._context.Trainers.AddAsync(trainer);
+                await this._context.SaveChangesAsync();
+                return trainer;
+            }
+            catch (Exception ex) 
+            {
+                throw;
+            }
         }
 
         public async Task<bool> UpdateAsync(Trainer trainer)

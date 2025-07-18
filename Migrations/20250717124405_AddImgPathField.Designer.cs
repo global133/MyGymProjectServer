@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyGymProject.Server.Migrations
 {
     [DbContext(typeof(DataBaseConnection))]
-    [Migration("20250711081143_AddedNewField")]
-    partial class AddedNewField
+    [Migration("20250717124405_AddImgPathField")]
+    partial class AddImgPathField
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -168,6 +168,10 @@ namespace MyGymProject.Server.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImgPath")
                         .IsRequired()
                         .HasColumnType("text");
 

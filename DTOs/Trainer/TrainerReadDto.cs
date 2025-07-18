@@ -11,6 +11,7 @@
         public string Gender { get; set; } = null!;
         public string Status { get; set; } = null!;
         public string Specialization { get; set; } = null!;
+        public string ImgPath { get; set; }
         public int Age =>
         DateTime.Now.Year - DateOfBirth.Year -
         (DateTime.Now.DayOfYear < DateOfBirth.DayOfYear ? 1 : 0);

@@ -14,6 +14,7 @@
         public string WorkingHours { get; set; } = null!;
         public string Login { get; set; } = null!;
         public string Password { get; set; } = null!;
+        public string ImgPath { get; set; }
         public List<TrainingSession> Trainings { get; set; } = new List<TrainingSession>();
     }
 }
