@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using MyGymProject.Server.DTOs.Trainer;
 using MyGymProject.Server.Models;
 using MyGymProject.Server.Services.Interfaces;
-
+using System.Text.Json;
 
 namespace MyGymProject.Server.Controllers
 {
@@ -11,10 +12,12 @@ namespace MyGymProject.Server.Controllers
     public class TrainersController : ControllerBase
     {
         private readonly ITrainerService _trainerService;
+        private readonly IDistributedCache _cache;
 
-        public TrainersController(ITrainerService trainerService)
+        public TrainersController(ITrainerService trainerService, IDistributedCache cache)
         {
             _trainerService = trainerService;
+            _cache = cache;
         }
 
         // GET: api/Trainers
@@ -29,11 +32,30 @@ namespace MyGymProject.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TrainerReadDto>> GetById(int id)
         {
-            var trainer = await _trainerService.GetByIdAsync(id);
-            if (trainer == null)
-                return NotFound();
+            var cacheKey = $"trainer_{id}";
+            try
+            {
+                var chachedData = await _cache.GetStringAsync(cacheKey);
 
-            return Ok(trainer);
+                if (!string.IsNullOrEmpty(chachedData))
+                {
+                    var trainer = JsonSerializer.Deserialize<TrainerReadDto>(chachedData);
+                    return Ok(trainer);
+                }
+                var trainerFromDb = await _trainerService.GetByIdAsync(id);
+                if (trainerFromDb == null)
+                    return NotFound();
+
+                var jsonData = JsonSerializer.Serialize(trainerFromDb);
+
+                await _cache.SetStringAsync(cacheKey, jsonData);
+                return Ok(trainerFromDb);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                return NotFound();
+            }
         }
 
         // GET: api/Trainers/login/johndoe

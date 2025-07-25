@@ -1,14 +1,15 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using MyGymProject.Server.Data;
 using MyGymProject.Server.Repositories;
 using MyGymProject.Server.Repositories.Interfaces;
-using MyGymProject.Server.Services.Interfaces;
-using MyGymProject.Server.Services;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.Security.Cryptography;
 using MyGymProject.Server.Repositories.InterfacesRepository;
+using MyGymProject.Server.Services;
+using MyGymProject.Server.Services.Interfaces;
+using StackExchange.Redis;
+using System.Security.Cryptography;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -97,6 +98,19 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddAuthorization();
+
+//кеширование в redis 
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.ConfigurationOptions = new ConfigurationOptions
+    {
+        EndPoints = { { "redis-19545.c253.us-central1-1.gce.redns.redis-cloud.com", 19545 } },
+        User = "default",
+        Password = "J3OCBoTGMmbHYxQsfeBQydjayljPANYj",
+        Ssl = false
+    };
+});
 
 var app = builder.Build();
 
