@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using MyGymProject.Server.DTOs.Client;
 using MyGymProject.Server.Models;
 using MyGymProject.Server.Services.Interfaces;
+using System.Text.Json;
 
 
 namespace MyGymProject.Server.Controllers
@@ -13,10 +15,12 @@ namespace MyGymProject.Server.Controllers
     public class ClientsController : ControllerBase
     {
         private readonly IClientService _clientService;
+        private readonly IDistributedCache _cache;
 
-        public ClientsController(IClientService clientService)
+        public ClientsController(IClientService clientService, IDistributedCache cache)
         {
             this._clientService = clientService;
+            this._cache = cache;
         }
 
         // GET: api/clients
@@ -31,11 +35,30 @@ namespace MyGymProject.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ClientReadDto>> GetById(int id)
         {
-            var client = await this._clientService.GetByIdAsync(id);
-            if (client == null)
-                return NotFound();
+            var cacheKey = $"client_{id}";
+            try
+            {
+                var cachedData = await this._cache.GetStringAsync(cacheKey);
+                if (!string.IsNullOrEmpty(cachedData))
+                {
+                    var data = JsonSerializer.Deserialize<ClientReadDto>(cachedData);
+                    return Ok(data);
+                }
 
-            return Ok(client);
+                var clientFromDb = await this._clientService.GetByIdAsync(id);
+
+                if (clientFromDb == null)
+                    return NotFound();
+
+                var jsonData = JsonSerializer.Serialize(clientFromDb);
+                await this._cache.SetStringAsync(cacheKey, jsonData, new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)});
+                return Ok(clientFromDb);
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine(ex);
+                return NotFound();
+            }
         }
 
         [HttpGet("bylogin/{login}")]

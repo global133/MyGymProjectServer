@@ -48,7 +48,10 @@ namespace MyGymProject.Server.Controllers
 
                 var jsonData = JsonSerializer.Serialize(trainerFromDb);
 
-                await _cache.SetStringAsync(cacheKey, jsonData);
+                await _cache.SetStringAsync(cacheKey, jsonData, new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+                });
                 return Ok(trainerFromDb);
             }
             catch (Exception ex)
